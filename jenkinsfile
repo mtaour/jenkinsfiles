@@ -1,0 +1,47 @@
+pipeline {
+
+   agent any
+   
+   stages {
+   
+	stage('Preparation') {
+	
+		steps {
+		
+			cleanWs deleteDirs: true, patterns: [[pattern: '*/', type: 'INCLUDE']]
+			bat 'mkdir jclasses'
+			dir('jclasses') {
+			git credentialsId: '248ec776-9c02-4aba-8889-8a01d366324e', url: 'https://github.com/hserhani/jenkinstuto'
+			}
+
+			bat 'mkdir jfiles'
+			dir('jfiles') {
+			git credentialsId: '248ec776-9c02-4aba-8889-8a01d366324e', url: 'https://github.com/mtaour/jenkinsfiles'
+			}
+		
+		}
+	}
+	   
+	stage('Compilation') {
+	
+		steps {
+		
+			dir('jclasses'){
+				checkout scm: [$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[credentialsId: '248ec776-9c02-4aba-8889-8a01d366324e', url: 'https://github.com/hserhani/jenkinstuto']]]
+			}
+			
+		bat '''@ECHO OFF
+cd C:\\Users\\Maruan\\jenkinstuto\\src\\jenkinsTuto
+javac HelloWorld.java
+javac Sample.java
+cd..
+java jenkinsTuto.HelloWorld
+java jenkinsTuto.Sample
+pause'''
+
+		
+		}
+	
+	}
+   }
+}
