@@ -14,10 +14,7 @@ pipeline {
 			git credentialsId: '248ec776-9c02-4aba-8889-8a01d366324e', url: 'https://github.com/hserhani/jenkinstuto'
 			}
 
-			bat 'mkdir jfiles'
-			dir('jfiles') {
-			git credentialsId: '248ec776-9c02-4aba-8889-8a01d366324e', url: 'https://github.com/mtaour/jenkinsfiles'
-			}
+
 		
 		}
 	}
